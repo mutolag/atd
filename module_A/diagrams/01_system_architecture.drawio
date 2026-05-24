@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Architecture" id="arch-v2">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="cam" value="Камеры RTSP/файл" style="rounded=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="yolo" value="YOLOv8 + ByteTrack&#xa;(Module B)" style="rounded=1;fillColor=#fff2cc;" vertex="1" parent="1">
+          <mxGeometry x="200" y="200" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="kafka" value="Apache Kafka&#xa;raw_detections" style="rounded=1;fillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="380" y="200" width="130" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="minio" value="MinIO (Bronze)&#xa;кадры" style="rounded=1;fillColor=#d5e8d4;" vertex="1" parent="1">
+          <mxGeometry x="200" y="80" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="pg" value="PostgreSQL (Silver)&#xa;факты + справочники" style="rounded=1;fillColor=#d5e8d4;" vertex="1" parent="1">
+          <mxGeometry x="560" y="120" width="160" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="stream" value="Streaming Processor&#xa;(Module V)" style="rounded=1;fillColor=#fff2cc;" vertex="1" parent="1">
+          <mxGeometry x="560" y="200" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ch" value="ClickHouse (Gold)&#xa;витрины" style="rounded=1;fillColor=#e1d5e7;" vertex="1" parent="1">
+          <mxGeometry x="760" y="160" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="af" value="Apache Airflow&#xa;batch + ML" style="rounded=1;fillColor=#ffe6cc;" vertex="1" parent="1">
+          <mxGeometry x="560" y="300" width="130" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="mb" value="Metabase&#xa;Dashboard" style="rounded=1;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="960" y="160" width="120" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="cam" target="yolo"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="yolo" target="kafka"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="yolo" target="minio"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="kafka" target="pg"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="kafka" target="stream"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="stream" target="ch"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="pg" target="af"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="af" target="ch"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="ch" target="mb"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

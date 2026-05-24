@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Data Flow" id="flow-v2">
+    <mxGraphModel dx="1200" dy="600" grid="1">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="b1" value="Bronze: MinIO&#xa;s3://bronze-frames/" style="fillColor=#d5e8d4;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="k1" value="Kafka: raw_detections&#xa;(buffer 24h)" style="fillColor=#f8cecc;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="40" width="160" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="s1" value="Silver: silver_detections&#xa;dim_cameras, dim_vehicle_types" style="fillColor=#d5e8d4;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="40" width="200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="g1" value="Gold: streaming_metrics" style="fillColor=#e1d5e7;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="120" width="180" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="g2" value="Gold: gold_traffic_aggregates (30m)" style="fillColor=#e1d5e7;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="170" width="220" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3" value="Gold: gold_incidents" style="fillColor=#e1d5e7;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="220" width="160" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="g4" value="Gold: gold_predictions" style="fillColor=#e1d5e7;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="270" width="170" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="dq" value="DQ logs (не в DWH)&#xa;logs/anomalies/" style="fillColor=#fff2cc;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="120" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="mb" value="Metabase" style="fillColor=#dae8fc;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="150" width="100" height="40" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
