@@ -52,6 +52,7 @@ def main():
 
     for msg in consumer:
         d = msg.value
+        
         try:
             with conn.cursor() as cur:
                 det_id = d.get("detection_id") or str(uuid.uuid4())

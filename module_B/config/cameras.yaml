@@ -18,18 +18,18 @@ cameras:
       in: [0, 1]
       out: [1, 0]
 
-  - camera_id: CAM-002
-    video_source: ../data_analitick_3_11/video/cam2.mp4
-    speed_limit_kmh: 50
-    frame_save_interval: 20
-    perspective_points:
-      - [100, 700]
-      - [550, 700]
-      - [650, 420]
-      - [80, 420]
-    real_world_rectangle:
-      width_m: 10
-      height_m: 25
-    directions:
-      in: [0, 1]
-      out: [1, 0]
+  # - camera_id: CAM-002
+  #   video_source: ../data_analitick_3_11/video/cam2.mp4
+  #   speed_limit_kmh: 50
+  #   frame_save_interval: 20
+  #   perspective_points:
+  #     - [100, 700]
+  #     - [550, 700]
+  #     - [650, 420]
+  #     - [80, 420]
+  #   real_world_rectangle:
+  #     width_m: 10
+  #     height_m: 25
+  #   directions:
+  #     in: [0, 1]
+  #     out: [1, 0]

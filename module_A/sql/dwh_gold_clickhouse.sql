@@ -1,7 +1,7 @@
--- Gold layer (ClickHouse) — витрины аналитики
+-- Gold layer (ClickHouse) — аналитические витрины (OLAP)
 CREATE DATABASE IF NOT EXISTS transport;
 
--- Потоковые метрики (модуль В), обновление ~5 с
+-- [Витрина 1: потоковые метрики realtime] — модуль В
 CREATE TABLE IF NOT EXISTS transport.streaming_metrics (
     camera_id       String,
     direction       String,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS transport.streaming_metrics (
 ) ENGINE = MergeTree()
 ORDER BY (camera_id, direction, timestamp);
 
--- Batch-агрегаты 30 мин (модуль Г)
+-- [Витрина 2: batch-агрегаты 30 мин] — модуль Г
 CREATE TABLE IF NOT EXISTS transport.gold_traffic_aggregates (
     camera_id       String,
     direction       String,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS transport.gold_traffic_aggregates (
 ) ENGINE = MergeTree()
 ORDER BY (camera_id, direction, window_start, vehicle_type);
 
--- Инциденты (модуль В)
+-- [Факт: опасная ситуация] — критерий А.4
 CREATE TABLE IF NOT EXISTS transport.gold_incidents (
     incident_id     String,
     camera_id       String,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS transport.gold_incidents (
 ) ENGINE = MergeTree()
 ORDER BY (camera_id, timestamp, incident_type);
 
--- ML-прогнозы (модуль Д)
+-- [Факт: прогноз средней скорости] — критерий А.4, модуль Д
 CREATE TABLE IF NOT EXISTS transport.gold_predictions (
     camera_id       String,
     direction       String,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS transport.gold_predictions (
 ) ENGINE = MergeTree()
 ORDER BY (camera_id, direction, prediction_time);
 
--- Аудит качества
+-- Аудит качества данных
 CREATE TABLE IF NOT EXISTS transport.gold_data_quality_audit (
     check_id        String,
     check_type      String,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS transport.gold_data_quality_audit (
 ) ENGINE = MergeTree()
 ORDER BY (check_time, table_name);
 
--- Водяной знак batch (опоздавшие данные)
+-- Watermark batch (опоздавшие данные) — модуль Г
 CREATE TABLE IF NOT EXISTS transport.gold_watermark (
     pipeline_name   String,
     last_event_time DateTime,

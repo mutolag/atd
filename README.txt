@@ -53,6 +53,33 @@
 	pip install airflow-clickhouse-plugin clickhouse-driver
 	установка дополнительных библиотек:
 	pip install clickhouse-driver pandas numpy boto3 kafka-python pyspark
+
+Усnановка kafka:
+	# Переход в домашнюю директорию
+	cd ~
+	# Скачать Kafka 4.2.0 (Scala 2.13)
+	wget https://dlcdn.apache.org/kafka/4.2.0/kafka_2.13-4.2.0.tgz
+	# Распаковать
+	tar -xzf kafka_2.13-4.2.0.tgz
+	# Переименовать папку для удобства (как у вас — ~/kafka)
+	mv kafka_2.13-4.2.0 kafka
+	# Назначить права
+	sudo chown -R $USER:$USER ~/kafka
+
+Установка java:
+	sudo apt update
+	sudo apt install -y wget tar gzip
+	# Установите Java 17 (или Java 21)
+	sudo apt install -y openjdk-17-jdk
+	# Проверка
+	java -version
+	Если openjdk-17-jdk не находится, добавьте PPA:
+	sudo apt update
+	sudo apt install -y wget tar gzip
+	# Установите Java 17 (или Java 21)
+	sudo apt install -y openjdk-17-jdk
+	# Проверка
+	java -version
 =======================================================
 
 Запуск minio

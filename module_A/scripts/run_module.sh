@@ -20,5 +20,4 @@ bash "$MODULE_A/scripts/init_kafka_topics.sh"
 mkdir -p "$ROOT/logs/anomalies" "$ROOT/logs/batch_quality" "$ROOT/models"
 echo ""
 echo "Модуль А: инфраструктура готова."
-echo "Демонстрация эксперту: см. $MODULE_A/CRITERIA_DEMO.md"
-echo "День 1 далее: cd $ROOT/module_B && ./scripts/run_module.sh"
+Ы

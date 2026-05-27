@@ -1,74 +1,92 @@
-# Модуль А — демонстрация эксперту (День 1, утро)
+# Модуль А — демонстрация эксперту (новые критерии)
 
-Запуск: `./scripts/run_module.sh` из папки `module_A/`.
+Источник: `05-Критерии_оценки _основа.xlsx`. Максимум модуля А: **15.5 баллов**.
 
-## А.1 Требования
-
-| Критерий | Где показать |
-|----------|----------------|
-| FN/NFR | `requirements.md` — таблицы F1–F6, NF1–NF5 |
-
-**Сказать эксперту:** требования заказчика формализованы и привязаны к компонентам.
+Запуск: `./scripts/run_module.sh`  
+Главный документ для судей: **[REPORT.ipynb](REPORT.ipynb)** (или [REPORT.md](REPORT.md))
 
 ---
 
-## А.2 Стек и обоснование
+## А.1 Анализ требований (1 балл)
 
-| Критерий | Где показать |
-|----------|----------------|
-| DWH, Kafka, Airflow | `tech_stack.md` — таблица + раздел «Обоснование» |
-| Kimball / Medallion | `tech_stack.md` § DWH |
+| Аспект | Что показать | Где |
+|--------|--------------|-----|
+| FN + NFR в отчёте | Разделы 2 и 3 | `REPORT.md` |
+| ≥2 функциональных, ≥2 нефункциональных | Таблицы F1–F6, NF1–NF5 | `REPORT.md` §2–3 |
+
+**Сказать эксперту:** требования соответствуют ТЗ конкурса, без противоречий.
 
 ---
 
-## А.3 Архитектура
+## А.2 Выбор архитектуры и технологий
 
-| Критерий | Где показать |
-|----------|----------------|
-| Диаграмма системы | `diagrams/01_system_architecture.drawio` |
-| Потоки данных | `diagrams/02_data_flow.drawio` |
-| Kafka-буфер | `sql/kafka_topics.md` |
-| Нет потери данных | `scripts/kafka_to_silver.py:53-96` — rollback, Kafka retention |
-| Масштабирование камер | `sql/dwh_silver_postgres.sql:62-65` — `dim_cameras` |
+| Аспект | Балл | Демонстрация |
+|--------|------|--------------|
+| Конкретные технологии DWH | 1 | `REPORT.md` §4 — MinIO, PostgreSQL, ClickHouse |
+| Потоковая передача + обработка | 1 | Kafka + Python consumers (`kafka_to_silver.py`, модуль В) |
+| Оркестрация + **какие процессы** | 1 | `tech_stack.md` таблица «Оркестрация»; DAG в модулях Г, Д |
+| Обоснование стека (0–3) | 1 | `tech_stack.md` § «Обоснование стека» |
+| Подход к DWH ≥2 аргументов | 1 | `tech_stack.md` § «Подход к проектированию DWH» |
 
-**Команда — Silver:**
+**На РМ:** открыть `tech_stack.md` и `REPORT.md` §6.
+
+---
+
+## А.3 Проектирование архитектуры данных
+
+| Аспект | Балл | Демонстрация |
+|--------|------|--------------|
+| Одна диаграмма, слои и потоки | 0.5 | `diagrams/00_platform_architecture.drawio` |
+| 5 типов блоков на схеме | 2 | −0.4 за каждый отсутствующий тип |
+
+**Чеклист на диаграмме:**
+
+- [ ] Аналитическое хранилище — ClickHouse Gold (+ PostgreSQL Silver)
+- [ ] Брокер — Apache Kafka
+- [ ] Обработчики — YOLO, Streaming, Airflow, Silver Loader
+- [ ] Объектное хранилище — MinIO
+- [ ] Интеграция — RTSP (вход), Metabase (выход)
+- [ ] Стрелки с подписями потоков
+
+**Экспорт PNG:** draw.io → `diagrams/00_platform_architecture.png`
+
+---
+
+## А.4 Реализация DWH
+
+| Аспект | Балл | Демонстрация |
+|--------|------|--------------|
+| Физическая БД | 0.5 | `./scripts/run_module.sh` |
+| Факты + справочники по критерию | 1.5 | `sql/schema_mapping.md` + `\dt` в psql |
+| Новые сущности/витрины (≥2) | 0.5 | `gold_traffic_aggregates`, `streaming_metrics`, … |
+| Объектное хранилище | 0.5 | MinIO bucket `bronze-frames` (модуль Б) |
+| Kafka-топики | 1 | `init_kafka_topics.sh:31-34` + `--list` |
+| Kafka → БД | 1 | `kafka_to_silver.py:19-31`, `53-96` |
+
+**SQL:**
 ```sql
 \c silver
-SELECT * FROM dim_vehicle_types;
-SELECT camera_id, location FROM dim_cameras;
+SELECT * FROM dim_vehicle_types;   -- Типы ТС
+SELECT * FROM dim_cameras;           -- Камеры
+SELECT count(*) FROM silver_track_history;  -- Трекеры
 ```
 
-**Команда — Gold:**
 ```bash
 clickhouse-client -q "SHOW TABLES FROM transport"
 ```
 
-**Команда — Kafka:**
-```bash
-bash scripts/init_kafka_topics.sh
-# ~/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
-```
+---
+
+## А.5 Отчёт (1 + 0–1 субъективно)
+
+| Аспект | Где |
+|--------|-----|
+| Отчёт подготовлен | `REPORT.md` (структура 10 разделов) |
+| Профессиональный уровень | ссылки на строки кода, DDL, диаграмму |
 
 ---
 
-## А.4 Физический DWH
-
-| Объект | Файл |
-|--------|------|
-| Справочники | `sql/dwh_silver_postgres.sql:15-25` |
-| Факты | `sql/dwh_silver_postgres.sql:27-55` |
-| Gold-витрины | `sql/dwh_gold_clickhouse.sql` |
-| Kafka-топики | `scripts/init_kafka_topics.sh:31-34` |
-
----
-
-## А.5 Отчёт
-
-`REPORT.md`
-
----
-
-## Переход к модулю Б
+## Переход к модулю Б (день 1)
 
 ```bash
 cd ../module_B

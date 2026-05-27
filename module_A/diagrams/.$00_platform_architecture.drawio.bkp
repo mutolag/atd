@@ -1,0 +1,200 @@
+<mxfile host="app.diagrams.net" agent="module_A" version="22.1.0">
+  <diagram id="arch-v3-clean" name="Архитектура платформы">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Title -->
+        <mxCell id="title" value="&lt;b&gt;Платформа аналитики опасных транспортных ситуаций&lt;/b&gt;&lt;br&gt;Модуль А — архитектура данных (Medallion + Kafka)" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="1000" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer backgrounds (behind everything) -->
+        <mxCell id="bg_in" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#64B5F6;opacity=30;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="200" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="lbl_in" value="Интеграция: источники" style="text;html=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=12;fontColor=#1565C0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="105" width="180" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="bg_proc" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FFB74D;opacity=30;" vertex="1" parent="1">
+          <mxGeometry x="260" y="100" width="280" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="lbl_proc" value="Обработчики (compute)" style="text;html=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=12;fontColor=#E65100;" vertex="1" parent="1">
+          <mxGeometry x="270" y="105" width="200" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="bg_bus" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#E57373;opacity=35;" vertex="1" parent="1">
+          <mxGeometry x="560" y="100" width="160" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="lbl_bus" value="Шина сообщений" style="text;html=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=12;fontColor=#C62828;" vertex="1" parent="1">
+          <mxGeometry x="570" y="105" width="140" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="bg_store" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#81C784;opacity=30;" vertex="1" parent="1">
+          <mxGeometry x="740" y="100" width="320" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="lbl_store" value="Целевые хранилища (DWH / Medallion)" style="text;html=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=12;fontColor=#2E7D32;" vertex="1" parent="1">
+          <mxGeometry x="750" y="105" width="280" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="bg_out" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#64B5F6;opacity=30;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="100" width="200" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="lbl_out" value="Интеграция: потребители" style="text;html=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=12;fontColor=#1565C0;" vertex="1" parent="1">
+          <mxGeometry x="1090" y="105" width="180" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Top routing corridor label -->
+        <mxCell id="corridor_top" value="" style="endArrow=none;dashed=1;strokeColor=#BDBDBD;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="155" as="sourcePoint"/>
+            <mxPoint x="1020" y="155" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- NODES -->
+        <mxCell id="cam" value="&lt;b&gt;Камеры&lt;/b&gt;&lt;br&gt;RTSP / файл&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;внешний источник&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1976D2;strokeWidth=2;fontColor=#0D47A1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="380" width="150" height="72" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="yolo" value="&lt;b&gt;YOLOv8 + ByteTrack&lt;/b&gt;&lt;br&gt;детекция (модуль Б)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE082;strokeColor=#F57C00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="300" y="370" width="200" height="72" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="kafka" value="&lt;b&gt;Apache Kafka&lt;/b&gt;&lt;br&gt;raw_detections&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;буфер NF1&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#D32F2F;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="580" y="370" width="120" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="silver_ld" value="&lt;b&gt;Silver Loader&lt;/b&gt;&lt;br&gt;kafka_to_silver.py&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;модуль А&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE082;strokeColor=#F57C00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="300" y="520" width="200" height="72" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="stream" value="&lt;b&gt;Streaming Processor&lt;/b&gt;&lt;br&gt;Python (модуль В)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE082;strokeColor=#F57C00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="300" y="220" width="200" height="72" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="airflow" value="&lt;b&gt;Apache Airflow&lt;/b&gt;&lt;br&gt;batch ELT, ML, DQ&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;модули Г, Д&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCC80;strokeColor=#EF6C00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="300" y="650" width="200" height="72" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="minio" value="&lt;b&gt;Bronze&lt;/b&gt;&lt;br&gt;MinIO&lt;br&gt;bucket: bronze-frames" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="780" y="170" width="240" height="68" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="pg" value="&lt;b&gt;Silver&lt;/b&gt;&lt;br&gt;PostgreSQL&lt;br&gt;факты, справочники" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="780" y="370" width="240" height="68" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ch" value="&lt;b&gt;Gold (OLAP)&lt;/b&gt;&lt;br&gt;ClickHouse&lt;br&gt;витрины transport.*" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="780" y="570" width="240" height="68" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="meta" value="&lt;b&gt;Metabase&lt;/b&gt;&lt;br&gt;дашборд&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;модуль Д&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1976D2;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="400" width="140" height="72" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ops" value="Оператор /&lt;br&gt;эксперт" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1976D2;strokeWidth=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="540" width="140" height="52" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="medallion" value="Medallion: Bronze → Silver → Gold" style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#FFFDE7;strokeColor=#F9A825;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="780" y="680" width="240" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- EDGES: orthogonal, labels with white background, routed around blocks -->
+        <mxCell id="e1" value="видеопоток" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#1976D2;fontSize=11;labelBackgroundColor=#FFFFFF;labelBorderColor=none;" edge="1" parent="1" source="cam" target="yolo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e2" value="JSON детекций" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#D32F2F;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="yolo" target="kafka">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e3" value="кадры JPG" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#388E3C;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="yolo" target="minio">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="340"/>
+              <mxPoint x="900" y="340"/>
+              <mxPoint x="900" y="204"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e4" value="consume" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#D32F2F;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="kafka" target="silver_ld">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="480"/>
+              <mxPoint x="400" y="480"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e5" value="факты SQL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#388E3C;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="silver_ld" target="pg">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="520" y="556"/>
+              <mxPoint x="520" y="404"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e6" value="consume" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#D32F2F;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="kafka" target="stream">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="300"/>
+              <mxPoint x="400" y="300"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e7" value="метрики, инциденты" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#7B1FA2;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="stream" target="ch">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="520" y="256"/>
+              <mxPoint x="520" y="604"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e8" value="read Silver" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#EF6C00;fontSize=10;labelBackgroundColor=#FFFFFF;dashed=1;" edge="1" parent="1" source="pg" target="airflow">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1060" y="404"/>
+              <mxPoint x="1060" y="686"/>
+              <mxPoint x="500" y="686"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e9" value="batch / прогноз" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#7B1FA2;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="airflow" target="ch">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="520" y="686"/>
+              <mxPoint x="520" y="604"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e10" value="SQL / API" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#1976D2;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="ch" target="meta">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1060" y="604"/>
+              <mxPoint x="1060" y="436"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endFill=0;strokeWidth=1;strokeColor=#1976D2;dashed=1;" edge="1" parent="1" source="meta" target="ops">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Criteria checklist (small, bottom-left) -->
+        <mxCell id="criteria" value="&lt;b&gt;Критерий А.3&lt;/b&gt;: хранилища ✓ | Kafka ✓ | обработчики ✓ | MinIO ✓ | RTSP/Metabase ✓ | потоки подписаны ✓" style="text;html=1;strokeColor=#9E9E9E;fillColor=#FAFAFA;align=left;fontSize=10;spacingLeft=8;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="860" width="1240" height="36" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

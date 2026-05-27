@@ -181,14 +181,18 @@ def process_camera(camera_cfg):
         results = model.track(
             frame, persist=True, classes=list(VEHICLE_CLASSES.keys()), verbose=False
         )
-        frame_path = None
+        #отрисовка обработанного видео потока
+        # frame1 = results[0].plot()
+        # cv2.imshow('trump', frame1)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
+        # frame_path = None
         has_objects = False
 
         if results and results[0].boxes is not None and len(results[0].boxes):
             has_objects = True
-            if frame_id % frame_interval == 0:
-                frame_path = save_frame_to_minio(frame, camera_id, frame_id)
-
+            frame_path = save_frame_to_minio(frame, camera_id, frame_id)
+        
         for box in results[0].boxes:
             cls_id = int(box.cls[0])
             if cls_id not in VEHICLE_CLASSES:

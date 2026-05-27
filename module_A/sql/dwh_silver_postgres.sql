@@ -1,7 +1,9 @@
 -- Silver layer (PostgreSQL) — очищенные факты и справочники
+-- Medallion: Silver | Kimball: измерения + факты событий
 CREATE DATABASE silver;
 \c silver;
 
+-- [Справочник: Камеры] — критерий А.4
 CREATE TABLE dim_cameras (
     camera_id       VARCHAR(20) PRIMARY KEY,
     location        VARCHAR(100),
@@ -12,6 +14,7 @@ CREATE TABLE dim_cameras (
     active          BOOLEAN DEFAULT true
 );
 
+-- [Справочник: Типы транспортных средств] — критерий А.4
 CREATE TABLE dim_vehicle_types (
     vehicle_type_id INT PRIMARY KEY,
     type_name       VARCHAR(20) NOT NULL,
@@ -24,6 +27,7 @@ INSERT INTO dim_vehicle_types VALUES
 (5, 'bus', 'Автобус'),
 (7, 'truck', 'Грузовик');
 
+-- [Факт: детекция / трек] — ядро потока, связь с трекером
 CREATE TABLE silver_detections (
     detection_id    UUID PRIMARY KEY,
     camera_id       VARCHAR(20) NOT NULL REFERENCES dim_cameras(camera_id),
@@ -43,6 +47,7 @@ CREATE TABLE silver_detections (
     processed_at    TIMESTAMP DEFAULT now()
 );
 
+-- [Трекеры] — история перемещения по кадрам — критерий А.4
 CREATE TABLE silver_track_history (
     history_id      BIGSERIAL PRIMARY KEY,
     camera_id       VARCHAR(20) NOT NULL,
@@ -58,8 +63,7 @@ CREATE INDEX idx_silver_det_time ON silver_detections(camera_id, event_time);
 CREATE INDEX idx_silver_det_track ON silver_detections(camera_id, track_id, event_time);
 CREATE INDEX idx_track_hist ON silver_track_history(camera_id, track_id, event_time);
 
--- Пример камеры (замените video_source на RTSP на площадке)
 INSERT INTO dim_cameras (camera_id, location, rtsp_url, speed_limit_kmh) VALUES
-('CAM-001', 'ул. Ленина — перекрёсток', 'file:///video/test_video.mp4', 60),
-('CAM-002', 'пр. Мира — развязка', 'file:///video/test_video_2.mp4', 50)
+('CAM-001', 'ул.', 'file:///', 60),
+('CAM-002', 'пр.', 'file:///', 50)
 ON CONFLICT (camera_id) DO NOTHING;

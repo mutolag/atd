@@ -6,7 +6,7 @@
 |-----|--------|----------|
 | **А** | Требования | `module_A/requirements.md` |
 | А | Стек + обоснование | `module_A/tech_stack.md` |
-| А | Диаграмма DWH/Kafka/MinIO | `module_A/diagrams/*.drawio` |
+| А | Диаграмма DWH/Kafka/MinIO | `module_A/diagrams/00_platform_architecture.drawio` |
 | А | Физический DWH | `module_A/sql/*.sql` |
 | А | Kafka + буфер | `module_A/scripts/`, `sql/kafka_topics.md` |
 | А | Отчёт | `module_A/REPORT.md` |
